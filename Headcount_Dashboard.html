@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Headcount Dashboard — Feb–Mar 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #eef1f6;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0e4d8b 100%);
+  color: #fff;
+  padding: 26px 40px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+.header-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.5px; }
+.header-sub   { font-size: 0.78rem; color: #94b4d0; margin-top: 3px; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.header-badge {
+  background: rgba(255,255,255,0.13);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.77rem;
+  color: #cfe3f5;
+}
+.header-attrition {
+  background: rgba(239,68,68,0.25);
+  border: 1px solid rgba(239,68,68,0.5);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.77rem;
+  color: #fca5a5;
+  font-weight: 700;
+}
+
+/* ── CONTAINER ── */
+.container { max-width: 1420px; margin: 0 auto; padding: 26px 28px 56px; }
+
+/* ── KPI CARDS ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.kpi {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+  border-bottom: 3px solid transparent;
+  position: relative;
+  overflow: hidden;
+  transition: transform .15s, box-shadow .15s;
+}
+.kpi:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
+.kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 14px 14px 0 0;
+}
+.kpi.c-blue   { border-bottom-color: #3b82f6; } .kpi.c-blue::before   { background: #3b82f6; }
+.kpi.c-teal   { border-bottom-color: #0d9488; } .kpi.c-teal::before   { background: #0d9488; }
+.kpi.c-green  { border-bottom-color: #22c55e; } .kpi.c-green::before  { background: #22c55e; }
+.kpi.c-red    { border-bottom-color: #ef4444; } .kpi.c-red::before    { background: #ef4444; }
+.kpi.c-amber  { border-bottom-color: #f59e0b; } .kpi.c-amber::before  { background: #f59e0b; }
+.kpi.c-purple { border-bottom-color: #8b5cf6; } .kpi.c-purple::before { background: #8b5cf6; }
+
+.kpi-icon { font-size: 1.4rem; margin-bottom: 8px; opacity: 0.85; }
+.kpi-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.7px; color: #6b7280; font-weight: 700; }
+.kpi-value { font-size: 1.95rem; font-weight: 900; line-height: 1.1; margin: 5px 0 4px; }
+.kpi.c-blue   .kpi-value { color: #2563eb; }
+.kpi.c-teal   .kpi-value { color: #0f766e; }
+.kpi.c-green  .kpi-value { color: #16a34a; }
+.kpi.c-red    .kpi-value { color: #dc2626; }
+.kpi.c-amber  .kpi-value { color: #d97706; }
+.kpi.c-purple .kpi-value { color: #7c3aed; }
+.kpi-sub { font-size: 0.72rem; color: #9ca3af; }
+
+/* ── SECTION HEADINGS ── */
+.section-heading {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #94a3b8;
+  margin: 24px 0 10px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+}
+.card-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.card-title-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── GRID LAYOUTS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid-1 { margin-bottom: 16px; }
+
+/* ── INSIGHT BADGES ── */
+.insight-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.insight-chip {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 0.78rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.chip-icon { font-size: 1rem; }
+.chip-label { color: #6b7280; font-weight: 500; margin-right: 2px; }
+.chip-val { color: #1e293b; }
+.chip-red   { border-left: 3px solid #ef4444; }
+.chip-green { border-left: 3px solid #22c55e; }
+.chip-amber { border-left: 3px solid #f59e0b; }
+
+/* ── ATTRITION PILLS ── */
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pill-red    { background: #fee2e2; color: #b91c1c; }
+.pill-amber  { background: #fef3c7; color: #92400e; }
+.pill-green  { background: #d1fae5; color: #065f46; }
+.pill-zero   { background: #f1f5f9; color: #94a3b8; }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.77rem; }
+thead tr { background: #0f172a; color: #e2e8f0; }
+th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+th.r, td.r { text-align: right; }
+tbody tr { border-bottom: 1px solid #f1f5f9; }
+tbody tr:hover { background: #f8fafc; }
+td { padding: 8px 12px; color: #334155; white-space: nowrap; }
+tr.total-row { background: #1e293b !important; }
+tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+.b-onroll     { background: #ede9fe; color: #5b21b6; }
+.b-offroll    { background: #e0f2fe; color: #075985; }
+.b-consultant { background: #fef9c3; color: #854d0e; }
+.b-intern     { background: #d1fae5; color: #065f46; }
+
+.tag-loc {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.chg-pos  { color: #16a34a; font-weight: 700; }
+.chg-neg  { color: #dc2626; font-weight: 700; }
+.chg-zero { color: #94a3b8; }
+
+/* ── FOOTER ── */
+.footer { text-align: center; padding: 18px; font-size: 0.72rem; color: #94a3b8; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 900px)  {
+  .grid-2 { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  .header { padding: 18px 20px; }
+  .container { padding: 18px 16px 40px; }
+}
+@media (max-width: 500px)  { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div>
+    <div class="header-title">📊 Headcount Dashboard</div>
+    <div class="header-sub">Period: 3 Feb 2026 → 5 Mar 2026 &nbsp;·&nbsp; All Locations &nbsp;·&nbsp; All Employee Types</div>
+  </div>
+  <div class="header-right">
+    <div class="header-badge">📅 Snapshot: 5 Mar 2026</div>
+    <div class="header-attrition">⚠️ Overall Attrition: 13.16%</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══ ONROLL KPI — PRIMARY ═══ -->
+  <div class="section-heading" style="margin-top:0;">🟣 Onroll Headcount</div>
+  <div class="kpi-grid" style="margin-bottom:14px;">
+    <div class="kpi c-blue">
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Feb HC</div>
+      <div class="kpi-value">223</div>
+      <div class="kpi-sub">As on 3 Feb 2026</div>
+    </div>
+    <div class="kpi c-teal">
+      <div class="kpi-icon">✅</div>
+      <div class="kpi-label">Mar HC</div>
+      <div class="kpi-value">195</div>
+      <div class="kpi-sub">As on 5 Mar 2026</div>
+    </div>
+    <div class="kpi c-green">
+      <div class="kpi-icon">🎉</div>
+      <div class="kpi-label">New Joiners</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-sub">Added this period</div>
+    </div>
+    <div class="kpi c-red">
+      <div class="kpi-icon">🚪</div>
+      <div class="kpi-label">Exits</div>
+      <div class="kpi-value">32</div>
+      <div class="kpi-sub">Vol. 2 · Co. Init. 30</div>
+    </div>
+    <div class="kpi c-amber">
+      <div class="kpi-icon">📉</div>
+      <div class="kpi-label">Attrition Rate</div>
+      <div class="kpi-value">15.31%</div>
+      <div class="kpi-sub">Avg HC: 209</div>
+    </div>
+    <div class="kpi c-purple">
+      <div class="kpi-icon">🔢</div>
+      <div class="kpi-label">Net HC Change</div>
+      <div class="kpi-value" style="color:#dc2626;">−28</div>
+      <div class="kpi-sub">Joiners 4 − Exits 32</div>
+    </div>
+  </div>
+
+  <!-- Onroll by-location mini strip -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Delhi/NCR</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">195 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#0f766e;">177</span></span>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Bharat</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">15 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">11</span></span>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Mumbai</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">13 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">7</span></span>
+    </div>
+  </div>
+
+  <!-- ═══ OFFROLL KPI — SECONDARY ═══ -->
+  <div class="section-heading">🔵 Offroll Headcount</div>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:22px;">
+    <div class="kpi c-blue"  style="padding:14px 14px 12px;">
+      <div class="kpi-label">Feb HC</div>
+      <div class="kpi-value" style="font-size:1.5rem;">52</div>
+      <div class="kpi-sub">3 Feb 2026</div>
+    </div>
+    <div class="kpi c-teal"  style="padding:14px 14px 12px;">
+      <div class="kpi-label">Mar HC</div>
+      <div class="kpi-value" style="font-size:1.5rem;">50</div>
+      <div class="kpi-sub">5 Mar 2026</div>
+    </div>
+    <div class="kpi c-green" style="padding:14px 14px 12px;">
+      <div class="kpi-label">New Joiners</div>
+      <div class="kpi-value" style="font-size:1.5rem;">1</div>
+      <div class="kpi-sub">Added this period</div>
+    </div>
+    <div class="kpi c-red"   style="padding:14px 14px 12px;">
+      <div class="kpi-label">Exits</div>
+      <div class="kpi-value" style="font-size:1.5rem;">3</div>
+      <div class="kpi-sub">Vol. 1 · Co. Init. 2</div>
+    </div>
+    <div class="kpi c-amber" style="padding:14px 14px 12px;">
+      <div class="kpi-label">Attrition Rate</div>
+      <div class="kpi-value" style="font-size:1.5rem;">5.88%</div>
+      <div class="kpi-sub">Avg HC: 51</div>
+    </div>
+    <div class="kpi c-purple" style="padding:14px 14px 12px;">
+      <div class="kpi-label">Net HC Change</div>
+      <div class="kpi-value" style="font-size:1.5rem;color:#dc2626;">−2</div>
+      <div class="kpi-sub">Joiners 1 − Exits 3</div>
+    </div>
+  </div>
+
+  <!-- ═══ OVERALL TOTAL SUMMARY STRIP ═══ -->
+  <div style="background:#1e293b;border-radius:12px;padding:14px 22px;margin-bottom:22px;display:flex;flex-wrap:wrap;align-items:center;gap:0;">
+    <span style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-right:20px;">Overall Total</span>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;flex:1;">
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Feb HC</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#93c5fd;">289</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Mar HC</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#6ee7b7;">258</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">New Joiners</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#86efac;">5</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Total Exits</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#fca5a5;">36</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Attrition</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#fcd34d;">13.16%</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Net Change</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#f87171;">−31</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONROLL vs OFFROLL CHARTS -->
+  <div class="grid-2" style="margin-bottom:22px;">
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-dot" style="background:#6366f1;"></span>
+        Onroll — Feb vs Mar HC by Location
+      </div>
+      <canvas id="chartOnrollLoc" height="200"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-dot" style="background:#0ea5e9;"></span>
+        Offroll — Feb vs Mar HC by Team
+      </div>
+      <canvas id="chartOffrollTeam" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- QUICK INSIGHTS -->
+  <div class="insight-row">
+    <div class="insight-chip chip-red">
+      <span class="chip-icon">🔴</span>
+      <span class="chip-label">Highest Attrition:</span>
+      <span class="chip-val">Mumbai Execution Team — 60%</span>
+    </div>
+    <div class="insight-chip chip-red">
+      <span class="chip-icon">🔴</span>
+      <span class="chip-label">Delhi/NCR Execution Team:</span>
+      <span class="chip-val">35.56% attrition — 16 exits</span>
+    </div>
+    <div class="insight-chip chip-amber">
+      <span class="chip-icon">🟡</span>
+      <span class="chip-label">Co. Initiated:</span>
+      <span class="chip-val">29 of 36 exits (80.6%)</span>
+    </div>
+    <div class="insight-chip chip-green">
+      <span class="chip-icon">🟢</span>
+      <span class="chip-label">Technology (Delhi):</span>
+      <span class="chip-val">+3 HC — only team to grow</span>
+    </div>
+    <div class="insight-chip chip-amber">
+      <span class="chip-icon">🟡</span>
+      <span class="chip-label">Execution Team total exits:</span>
+      <span class="chip-val">26 of 36 (72% of all exits)</span>
+    </div>
+  </div>
+
+  <!-- OVERVIEW: Location + Exit Breakdown -->
+  <div class="section-heading">Overview</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-dot" style="background:#10b981;"></span>
+        HC by Location (Feb vs Mar)
+      </div>
+      <canvas id="chartLocation" height="220"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-dot" style="background:#ef4444;"></span>
+        Exit Breakdown
+      </div>
+      <canvas id="chartExits" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- ATTRITION ANALYSIS -->
+  <div class="section-heading">Attrition Analysis</div>
+  <div class="grid-1">
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-dot" style="background:#ef4444;"></span>
+        Attrition Rate &amp; Exit Count by Team (teams with exits only)
+        <span style="margin-left:auto;font-size:0.7rem;font-weight:500;color:#94a3b8;">Bar = Attrition % &nbsp;·&nbsp; Label = No. of exits</span>
+      </div>
+      <canvas id="chartAttritionTeam" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- TEAM-LEVEL HEADCOUNT -->
+  <div class="section-heading">Team-Level Headcount</div>
+  <div class="grid-1">
+    <div class="card">
+      <div class="card-title">
+        <span class="card-title-dot" style="background:#6366f1;"></span>
+        Feb vs Mar Headcount — by Team (all teams)
+      </div>
+      <canvas id="chartTeams" height="110"></canvas>
+    </div>
+  </div>
+
+  <!-- DETAIL TABLE -->
+  <div class="section-heading">Detailed Register</div>
+  <div class="card">
+    <div class="card-title">
+      <span class="card-title-dot" style="background:#334155;"></span>
+      Full Headcount Detail — All Segments
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Team</th>
+            <th class="r">Feb HC</th>
+            <th class="r">New Joiners</th>
+            <th class="r">Total Exits</th>
+            <th class="r">Voluntary</th>
+            <th class="r">Co. Initiated</th>
+            <th class="r">Mar HC</th>
+            <th class="r">Avg HC</th>
+            <th class="r">Attrition</th>
+            <th class="r">Net Change</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<div class="footer">Headcount Dashboard &nbsp;·&nbsp; Source: Attrition.xlsx &nbsp;·&nbsp; Period: 3 Feb – 5 Mar 2026</div>
+
+<script>
+/* ═══ DATA  — Onroll first, then Offroll, Consultant, Intern ═══ */
+const rows = [
+  // ── ONROLL ──────────────────────────────────────────────────────────────────
+  {type:'Onroll',    loc:'Bharat',   team:'Execution Team',     open:15,join:0, res:4,  vol:0, co:4,  close:11, avg:13,   att:26.67},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Analytics',          open:6, join:0, res:0,  vol:0, co:0,  close:6,  avg:6,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Business',           open:2, join:0, res:0,  vol:0, co:0,  close:2,  avg:2,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Communications',     open:3, join:0, res:0,  vol:0, co:0,  close:3,  avg:3,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Customer Experience',open:20,join:0, res:2,  vol:1, co:1,  close:18, avg:19,   att:10},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Execution Team',     open:45,join:0, res:16, vol:2, co:14, close:29, avg:37,   att:35.56},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Finance',            open:11,join:0, res:0,  vol:0, co:0,  close:11, avg:11,   att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Founders Office',    open:5, join:0, res:0,  vol:0, co:0,  close:5,  avg:5,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'HR & Admin',         open:8, join:0, res:2,  vol:0, co:2,  close:6,  avg:7,    att:25},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Labs',               open:2, join:0, res:0,  vol:0, co:0,  close:2,  avg:2,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Learning & Dev',     open:5, join:0, res:0,  vol:0, co:0,  close:5,  avg:5,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Marketing',          open:7, join:0, res:1,  vol:1, co:0,  close:6,  avg:6.5,  att:14.29},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Product',            open:18,join:1, res:1,  vol:1, co:0,  close:18, avg:18,   att:5.56},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Solution Design',    open:10,join:0, res:0,  vol:0, co:0,  close:10, avg:10,   att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Supply',             open:9, join:0, res:0,  vol:0, co:0,  close:9,  avg:9,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Tech For Future',    open:5, join:0, res:0,  vol:0, co:0,  close:5,  avg:5,    att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'Technology',         open:37,join:3, res:0,  vol:0, co:0,  close:40, avg:38.5, att:0},
+  {type:'Onroll',    loc:'Delhi/NCR',team:'User Insights',      open:2, join:0, res:0,  vol:0, co:0,  close:2,  avg:2,    att:0},
+  {type:'Onroll',    loc:'Mumbai',   team:'Execution Team',     open:10,join:0, res:6,  vol:0, co:6,  close:4,  avg:7,    att:60},
+  {type:'Onroll',    loc:'Mumbai',   team:'Learning & Dev',     open:1, join:0, res:0,  vol:0, co:0,  close:1,  avg:1,    att:0},
+  {type:'Onroll',    loc:'Mumbai',   team:'Supply',             open:2, join:0, res:0,  vol:0, co:0,  close:2,  avg:2,    att:0},
+  // ── OFFROLL ─────────────────────────────────────────────────────────────────
+  {type:'Offroll',   loc:'Delhi/NCR',team:'Customer Experience',open:16,join:1, res:1,  vol:1, co:0,  close:16, avg:16,   att:6.25},
+  {type:'Offroll',   loc:'Delhi/NCR',team:'Execution Team',     open:2, join:0, res:0,  vol:0, co:0,  close:2,  avg:2,    att:0},
+  {type:'Offroll',   loc:'Delhi/NCR',team:'Supply',             open:31,join:0, res:2,  vol:0, co:2,  close:29, avg:30,   att:6.45},
+  {type:'Offroll',   loc:'Delhi/NCR',team:'User Insights',      open:1, join:0, res:0,  vol:0, co:0,  close:1,  avg:1,    att:0},
+  {type:'Offroll',   loc:'Mumbai',   team:'Supply',             open:2, join:0, res:0,  vol:0, co:0,  close:2,  avg:2,    att:0},
+  // ── CONSULTANT ──────────────────────────────────────────────────────────────
+  {type:'Consultant',loc:'Delhi/NCR',team:'Business',           open:1, join:0, res:0,  vol:0, co:0,  close:1,  avg:1,    att:0},
+  {type:'Consultant',loc:'Delhi/NCR',team:'Solution Design',    open:1, join:0, res:0,  vol:0, co:0,  close:1,  avg:1,    att:0},
+  {type:'Consultant',loc:'Delhi/NCR',team:'Technology',         open:10,join:0, res:0,  vol:0, co:0,  close:10, avg:10,   att:0},
+  {type:'Consultant',loc:'Delhi/NCR',team:'HR & Admin',         open:1, join:0, res:1,  vol:1, co:0,  close:0,  avg:0.5,  att:100},
+  // ── INTERN ──────────────────────────────────────────────────────────────────
+  {type:'Intern',    loc:'Delhi/NCR',team:'Finance',            open:1, join:0, res:0,  vol:0, co:0,  close:1,  avg:1,    att:0},
+];
+
+/* ═══ HELPERS ═══ */
+function groupBy(arr, key, fields) {
+  const m = {};
+  arr.forEach(r => {
+    const k = r[key] || '(blank)';
+    if (!m[k]) { m[k] = { label: k }; fields.forEach(f => m[k][f] = 0); }
+    fields.forEach(f => m[k][f] += (r[f] || 0));
+  });
+  return Object.values(m);
+}
+
+/* ═══ CHART DEFAULTS ═══ */
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size   = 11;
+Chart.defaults.color       = '#64748b';
+// Register datalabels plugin globally
+Chart.register(ChartDataLabels);
+
+const hex2rgba = (h, a) => {
+  const n = parseInt(h.slice(1), 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+};
+
+/* ═══ CHART 1: HC by Location grouped bar ═══ */
+const byLoc = groupBy(rows, 'loc', ['open', 'close']);
+new Chart(document.getElementById('chartLocation'), {
+  type: 'bar',
+  data: {
+    labels: byLoc.map(d => d.label),
+    datasets: [
+      { label: 'Feb HC', data: byLoc.map(d => d.open),  backgroundColor: '#6366f1', borderRadius: 6 },
+      { label: 'Mar HC', data: byLoc.map(d => d.close), backgroundColor: '#22c55e', borderRadius: 6 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 14 } },
+      datalabels: { display: false }
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#f1f5f9' }, beginAtZero: true }
+    }
+  }
+});
+
+/* ═══ CHART 2: Exit Breakdown (Donut) ═══ */
+new Chart(document.getElementById('chartExits'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Voluntary Resigned', 'Co. Initiated'],
+    datasets: [{
+      data: [7, 29],
+      backgroundColor: ['#f59e0b', '#ef4444'],
+      borderWidth: 3, borderColor: '#fff', hoverOffset: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '60%',
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 14, font: { size: 11 } } },
+      datalabels: {
+        color: '#fff',
+        font: { weight: 'bold', size: 13 },
+        formatter: (value) => value
+      },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} (${(ctx.parsed/36*100).toFixed(1)}%)` } }
+    }
+  }
+});
+
+/* ═══ CHART 3: Attrition Rate by Team with exit count datalabels ═══ */
+const attTeams = [];
+rows.forEach(r => {
+  if (r.res > 0) {
+    const key = r.team + (r.loc !== 'Delhi/NCR' ? ` (${r.loc})` : '');
+    attTeams.push({ label: key, att: r.att, res: r.res });
+  }
+});
+attTeams.sort((a, b) => b.att - a.att);
+
+new Chart(document.getElementById('chartAttritionTeam'), {
+  type: 'bar',
+  data: {
+    labels: attTeams.map(d => d.label),
+    datasets: [{
+      label: 'Attrition %',
+      data: attTeams.map(d => d.att),
+      exitCounts: attTeams.map(d => d.res),   // stored for datalabels
+      backgroundColor: attTeams.map(d => d.att >= 40 ? '#ef4444' : d.att >= 15 ? '#f59e0b' : '#22c55e'),
+      borderRadius: 5
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    layout: { padding: { right: 50 } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const exits = attTeams[ctx.dataIndex].res;
+            return `  ${ctx.parsed.x.toFixed(2)}% attrition  (${exits} exit${exits > 1 ? 's' : ''})`;
+          }
+        }
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+        offset: 4,
+        color: '#334155',
+        font: { weight: '700', size: 11 },
+        formatter: (value, ctx) => {
+          const exits = attTeams[ctx.dataIndex].res;
+          return `${value.toFixed(1)}%  (${exits})`;
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '%' }, max: 80 },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+/* ═══ CHART 4: Feb vs Mar HC by Team (all teams) ═══ */
+const byTeamAll = groupBy(rows, 'team', ['open', 'close']);
+byTeamAll.sort((a, b) => b.open - a.open);
+
+new Chart(document.getElementById('chartTeams'), {
+  type: 'bar',
+  data: {
+    labels: byTeamAll.map(d => d.label),
+    datasets: [
+      { label: 'Feb HC', data: byTeamAll.map(d => d.open),  backgroundColor: hex2rgba('#3b82f6', 0.75), borderRadius: 4 },
+      { label: 'Mar HC', data: byTeamAll.map(d => d.close), backgroundColor: hex2rgba('#0d9488', 0.75), borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 14 } },
+      datalabels: { display: false }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 30 } },
+      y: { grid: { color: '#f1f5f9' }, beginAtZero: true }
+    }
+  }
+});
+
+/* ═══ CHART 5: Onroll by Location ═══ */
+new Chart(document.getElementById('chartOnrollLoc'), {
+  type: 'bar',
+  data: {
+    labels: ['Delhi/NCR', 'Bharat', 'Mumbai'],
+    datasets: [
+      { label: 'Feb HC', data: [195, 15, 13], backgroundColor: hex2rgba('#6366f1', 0.8), borderRadius: 6 },
+      { label: 'Mar HC', data: [177, 11, 7],  backgroundColor: hex2rgba('#22c55e', 0.8), borderRadius: 6 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 14, font: { size: 11 } } },
+      datalabels: { display: false }
+    },
+    scales: {
+      x: { grid: { display: false } },
+      y: { grid: { color: '#f1f5f9' }, beginAtZero: true,
+           title: { display: true, text: 'Headcount', font: { size: 10 }, color: '#94a3b8' } }
+    }
+  }
+});
+
+/* ═══ CHART 6: Offroll by Team ═══ */
+new Chart(document.getElementById('chartOffrollTeam'), {
+  type: 'bar',
+  data: {
+    labels: ['Supply (Delhi)', 'Cust Exp (Delhi)', 'Execution (Delhi)', 'User Insights (Delhi)', 'Supply (Mumbai)'],
+    datasets: [
+      { label: 'Feb HC', data: [31, 16, 2, 1, 2], backgroundColor: hex2rgba('#0ea5e9', 0.8), borderRadius: 6 },
+      { label: 'Mar HC', data: [29, 16, 2, 1, 2], backgroundColor: hex2rgba('#14b8a6', 0.8), borderRadius: 6 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 14, font: { size: 11 } } },
+      datalabels: { display: false }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+      y: { grid: { color: '#f1f5f9' }, beginAtZero: true,
+           title: { display: true, text: 'Headcount', font: { size: 10 }, color: '#94a3b8' } }
+    }
+  }
+});
+
+/* ═══ POPULATE TABLE ═══ */
+const tbody = document.getElementById('tableBody');
+const typeClass = { Consultant:'b-consultant', Intern:'b-intern', Onroll:'b-onroll', Offroll:'b-offroll' };
+
+rows.forEach(r => {
+  const chg = r.close - r.open;
+  const attPillClass = r.att === 0 ? 'pill-zero' : r.att >= 30 ? 'pill-red' : r.att >= 10 ? 'pill-amber' : 'pill-green';
+  const chgClass = chg > 0 ? 'chg-pos' : chg < 0 ? 'chg-neg' : 'chg-zero';
+  const chgText  = chg > 0 ? `+${chg}` : `${chg}`;
+  const attText  = r.att > 0 ? r.att.toFixed(2) + '%' : '—';
+
+  tbody.innerHTML += `<tr>
+    <td><span class="badge ${typeClass[r.type] || 'b-offroll'}">${r.type}</span></td>
+    <td><span class="tag-loc">${r.loc}</span></td>
+    <td>${r.team}</td>
+    <td class="r" style="font-weight:600;">${r.open}</td>
+    <td class="r">${r.join || '—'}</td>
+    <td class="r">${r.res  || '—'}</td>
+    <td class="r">${r.vol  || '—'}</td>
+    <td class="r">${r.co   || '—'}</td>
+    <td class="r" style="font-weight:600;">${r.close}</td>
+    <td class="r">${r.avg}</td>
+    <td class="r"><span class="pill ${attPillClass}">${attText}</span></td>
+    <td class="r ${chgClass}">${chgText}</td>
+  </tr>`;
+});
+
+tbody.innerHTML += `<tr class="total-row">
+  <td colspan="3">Grand Total</td>
+  <td class="r">289</td>
+  <td class="r">5</td>
+  <td class="r">36</td>
+  <td class="r">7</td>
+  <td class="r">29</td>
+  <td class="r">258</td>
+  <td class="r">273.5</td>
+  <td class="r"><span class="pill pill-amber">13.16%</span></td>
+  <td class="r" style="color:#ef4444;font-weight:700;">−31</td>
+</tr>`;
+</script>
+</body>
+</html>
