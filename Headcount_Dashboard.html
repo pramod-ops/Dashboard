@@ -240,153 +240,308 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
 
 <div class="container">
 
-  <!-- ═══ HEADCOUNT TREE VIEW ═══ -->
+  <!-- ═══ HEADCOUNT TREE — EXECUTIVE VIEW ═══ -->
   <style>
-  .hc-tree-wrap { margin-bottom: 26px; }
-  .hc-tree-root-row { display: flex; justify-content: center; }
-  .hc-root-card {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0e4d8b 100%);
-    color: #fff; border-radius: 16px; padding: 18px 48px 16px;
-    text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    position: relative; min-width: 280px;
+  /* ── TREE WRAPPER ── */
+  .exec-tree { margin-bottom: 32px; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+  /* ── ROOT NODE ── */
+  .exec-root-row { display: flex; justify-content: center; margin-bottom: 0; }
+  .exec-root {
+    background: linear-gradient(135deg, #0a1628 0%, #0f2a4a 50%, #0d3b6e 100%);
+    border-radius: 20px;
+    padding: 28px 60px 24px;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(10,22,40,0.35), 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+    min-width: 340px;
+    border: 1px solid rgba(255,255,255,0.08);
   }
-  .hc-root-card::after {
-    content: ''; position: absolute;
-    bottom: -22px; left: 50%; transform: translateX(-50%);
-    width: 2px; height: 22px; background: #475569;
+  .exec-root::after {
+    content: '';
+    position: absolute;
+    bottom: -28px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 28px;
+    background: linear-gradient(to bottom, #334155, #e2e8f0);
   }
-  .hc-root-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; color: #94b4d0; margin-bottom: 6px; font-weight: 700; }
-  .hc-root-hc { font-size: 2rem; font-weight: 900; line-height: 1; }
-  .hc-root-feb { color: #93c5fd; }
-  .hc-root-sep { color: #475569; margin: 0 10px; }
-  .hc-root-mar { color: #6ee7b7; }
-  .hc-root-meta { font-size: 0.68rem; color: #94a3b8; margin-top: 6px; }
-  .hc-connector-row { position: relative; height: 44px; margin: 0; }
-  .hc-conn-vert-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
-  .hc-conn-horiz { position: absolute; top: 22px; left: 12.5%; right: 12.5%; height: 2px; background: #475569; }
-  .hc-conn-v1 { position: absolute; top: 22px; left: 12.5%;  transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
-  .hc-conn-v2 { position: absolute; top: 22px; left: 37.5%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
-  .hc-conn-v3 { position: absolute; top: 22px; left: 62.5%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
-  .hc-conn-v4 { position: absolute; top: 22px; left: 87.5%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
-  .hc-branches { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
-  .hc-branch-card { background: #fff; border-radius: 12px; padding: 14px 16px 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-top: 4px solid transparent; }
-  .hc-branch-card.onroll     { border-top-color: #8b5cf6; }
-  .hc-branch-card.offroll    { border-top-color: #3b82f6; }
-  .hc-branch-card.consultant { border-top-color: #f59e0b; }
-  .hc-branch-card.intern     { border-top-color: #22c55e; }
-  .hc-branch-title { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
-  .hc-branch-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-  .hc-branch-name { font-size: 0.75rem; font-weight: 800; color: #1e293b; flex: 1; }
-  .hc-branch-hc { font-size: 0.82rem; font-weight: 900; }
-  .hc-branch-hc .bfeb { color: #2563eb; }
-  .hc-branch-hc .bmar { color: #0f766e; }
-  .hc-branch-hc .bsep { color: #94a3b8; margin: 0 3px; }
-  .hc-metrics { display: flex; flex-direction: column; gap: 5px; }
-  .hc-metric { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; }
-  .hc-m-label { color: #6b7280; }
-  .hc-m-val   { font-weight: 700; }
-  .hc-m-green  { color: #16a34a; }
-  .hc-m-red    { color: #dc2626; }
-  .hc-m-amber  { color: #d97706; }
-  .hc-m-gray   { color: #94a3b8; }
-  .hc-locs { margin-top: 9px; padding-top: 7px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 4px; }
-  .hc-loc-row { display: flex; justify-content: space-between; font-size: 0.67rem; }
-  .hc-loc-name { color: #64748b; font-weight: 600; }
-  .hc-loc-val  { font-weight: 800; color: #334155; }
-  .hc-loc-val .lfeb { color: #4f46e5; }
-  .hc-loc-val .lmar-dn { color: #dc2626; }
-  .hc-loc-val .larrow  { color: #cbd5e1; margin: 0 3px; }
+  .exec-root-eyebrow {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #60a5fa; margin-bottom: 10px;
+  }
+  .exec-root-numbers {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 10px;
+  }
+  .exec-root-num { line-height: 1; }
+  .exec-root-num .num-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 2px; }
+  .exec-root-num .num-val   { font-size: 2.6rem; font-weight: 900; }
+  .exec-root-num.feb .num-val { color: #93c5fd; }
+  .exec-root-num.mar .num-val { color: #34d399; }
+  .exec-root-arrow {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    color: #475569;
+  }
+  .exec-root-arrow .arr-icon { font-size: 1.4rem; }
+  .exec-root-arrow .arr-delta {
+    background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4);
+    color: #fca5a5; font-size: 0.62rem; font-weight: 800;
+    padding: 2px 8px; border-radius: 10px; letter-spacing: 0.3px;
+  }
+  .exec-root-footer {
+    display: flex; justify-content: center; gap: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-top: 4px;
+  }
+  .exec-root-stat { text-align: center; }
+  .exec-root-stat .rs-label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.8px; color: #475569; }
+  .exec-root-stat .rs-val   { font-size: 0.85rem; font-weight: 800; margin-top: 1px; }
+  .exec-root-stat.joiners .rs-val { color: #4ade80; }
+  .exec-root-stat.exits   .rs-val { color: #f87171; }
+  .exec-root-stat.attr    .rs-val { color: #fbbf24; }
+
+  /* ── CONNECTOR ── */
+  .exec-conn { position: relative; height: 50px; }
+  .exec-conn-vt {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 22px;
+    background: linear-gradient(to bottom, #e2e8f0, #94a3b8);
+  }
+  .exec-conn-hz {
+    position: absolute; top: 22px; left: 12.5%; right: 12.5%;
+    height: 2px; background: #94a3b8;
+  }
+  .exec-conn-vb1, .exec-conn-vb2, .exec-conn-vb3, .exec-conn-vb4 {
+    position: absolute; top: 22px; width: 2px; height: 28px;
+    background: linear-gradient(to bottom, #94a3b8, #cbd5e1);
+  }
+  .exec-conn-vb1 { left: 12.5%;  transform: translateX(-50%); }
+  .exec-conn-vb2 { left: 37.5%; transform: translateX(-50%); }
+  .exec-conn-vb3 { left: 62.5%; transform: translateX(-50%); }
+  .exec-conn-vb4 { left: 87.5%; transform: translateX(-50%); }
+
+  /* ── BRANCH GRID ── */
+  .exec-branches { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+
+  /* ── BRANCH CARD ── */
+  .exec-branch {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .exec-branch:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.13); }
+
+  /* Colour bar at top */
+  .exec-branch-bar { height: 5px; }
+  .exec-branch.onroll     .exec-branch-bar { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+  .exec-branch.offroll    .exec-branch-bar { background: linear-gradient(90deg, #1d4ed8, #60a5fa); }
+  .exec-branch.consultant .exec-branch-bar { background: linear-gradient(90deg, #b45309, #fbbf24); }
+  .exec-branch.intern     .exec-branch-bar { background: linear-gradient(90deg, #15803d, #4ade80); }
+
+  .exec-branch-body { padding: 18px 18px 16px; }
+
+  /* Header row: title + type badge */
+  .exec-branch-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .exec-branch-title { font-size: 0.82rem; font-weight: 800; color: #1e293b; letter-spacing: -0.2px; }
+  .exec-type-badge { font-size: 0.6rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .exec-branch.onroll     .exec-type-badge { background: #ede9fe; color: #5b21b6; }
+  .exec-branch.offroll    .exec-type-badge { background: #dbeafe; color: #1e40af; }
+  .exec-branch.consultant .exec-type-badge { background: #fef3c7; color: #92400e; }
+  .exec-branch.intern     .exec-type-badge { background: #dcfce7; color: #166534; }
+
+  /* HC numbers */
+  .exec-branch-hc { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; }
+  .exec-hc-block { text-align: center; }
+  .exec-hc-block .hcb-label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
+  .exec-hc-block .hcb-val   { font-size: 1.7rem; font-weight: 900; line-height: 1.1; }
+  .exec-hc-block.feb .hcb-val { color: #2563eb; }
+  .exec-hc-block.mar .hcb-val { color: #0f766e; }
+  .exec-hc-mid { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .exec-hc-mid .mid-arr { font-size: 1.1rem; color: #94a3b8; }
+  .exec-delta-badge { font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+  .exec-delta-neg { background: #fee2e2; color: #b91c1c; }
+  .exec-delta-pos { background: #dcfce7; color: #15803d; }
+  .exec-delta-zero{ background: #f1f5f9; color: #64748b; }
+
+  /* Metrics table */
+  .exec-metrics { display: flex; flex-direction: column; gap: 6px; }
+  .exec-metric-row { display: flex; justify-content: space-between; align-items: center; }
+  .exec-m-label { font-size: 0.68rem; color: #6b7280; }
+  .exec-m-val   { font-size: 0.72rem; font-weight: 800; }
+  .emc-green { color: #16a34a; }
+  .emc-red   { color: #dc2626; }
+  .emc-amber { color: #d97706; }
+  .emc-gray  { color: #94a3b8; }
+  .emc-sep   { color: #94a3b8; margin: 0 2px; font-weight: 400; }
+
+  /* Location sub-section (Onroll only) */
+  .exec-locs { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2e8f0; display: flex; flex-direction: column; gap: 5px; }
+  .exec-locs-title { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700; margin-bottom: 2px; }
+  .exec-loc-row { display: flex; justify-content: space-between; align-items: center; }
+  .exec-loc-dot { width: 6px; height: 6px; border-radius: 50%; background: #6366f1; margin-right: 5px; flex-shrink: 0; }
+  .exec-loc-name { font-size: 0.66rem; color: #475569; font-weight: 600; display: flex; align-items: center; }
+  .exec-loc-vals { font-size: 0.68rem; font-weight: 800; }
+  .exec-loc-vals .lv-feb { color: #4f46e5; }
+  .exec-loc-vals .lv-arr { color: #cbd5e1; margin: 0 3px; }
+  .exec-loc-vals .lv-mar { color: #dc2626; }
   </style>
 
-  <div class="section-heading" style="margin-top:0;">📊 Headcount Overview</div>
-  <div class="hc-tree-wrap">
+  <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#94a3b8;margin:0 0 14px 2px;">&#128202; Headcount Overview — Feb to Mar 2026</div>
 
-    <div class="hc-tree-root-row">
-      <div class="hc-root-card">
-        <div class="hc-root-label">Overall Headcount</div>
-        <div class="hc-root-hc">
-          <span class="hc-root-feb">289</span>
-          <span class="hc-root-sep">&#8594;</span>
-          <span class="hc-root-mar">258</span>
+  <div class="exec-tree">
+
+    <!-- ── ROOT NODE ── -->
+    <div class="exec-root-row">
+      <div class="exec-root">
+        <div class="exec-root-eyebrow">Total Headcount &nbsp;·&nbsp; All Employee Types</div>
+        <div class="exec-root-numbers">
+          <div class="exec-root-num feb">
+            <div class="num-label">Feb HC</div>
+            <div class="num-val">289</div>
+          </div>
+          <div class="exec-root-arrow">
+            <div class="arr-icon">&#8594;</div>
+            <div class="arr-delta">&#8722;31</div>
+          </div>
+          <div class="exec-root-num mar">
+            <div class="num-label">Mar HC</div>
+            <div class="num-val">258</div>
+          </div>
         </div>
-        <div class="hc-root-meta">Joiners: 5 &nbsp;&middot;&nbsp; Exits: 36 &nbsp;&middot;&nbsp; Attrition: 13.16%</div>
+        <div class="exec-root-footer">
+          <div class="exec-root-stat joiners"><div class="rs-label">New Joiners</div><div class="rs-val">+5</div></div>
+          <div class="exec-root-stat exits">  <div class="rs-label">Total Exits</div> <div class="rs-val">36</div></div>
+          <div class="exec-root-stat attr">   <div class="rs-label">Attrition</div>   <div class="rs-val">13.16%</div></div>
+        </div>
       </div>
     </div>
 
-    <div class="hc-connector-row">
-      <div class="hc-conn-vert-top"></div>
-      <div class="hc-conn-horiz"></div>
-      <div class="hc-conn-v1"></div>
-      <div class="hc-conn-v2"></div>
-      <div class="hc-conn-v3"></div>
-      <div class="hc-conn-v4"></div>
+    <!-- ── CONNECTORS ── -->
+    <div class="exec-conn">
+      <div class="exec-conn-vt"></div>
+      <div class="exec-conn-hz"></div>
+      <div class="exec-conn-vb1"></div>
+      <div class="exec-conn-vb2"></div>
+      <div class="exec-conn-vb3"></div>
+      <div class="exec-conn-vb4"></div>
     </div>
 
-    <div class="hc-branches">
+    <!-- ── BRANCHES ── -->
+    <div class="exec-branches">
 
-      <div class="hc-branch-card onroll">
-        <div class="hc-branch-title">
-          <span class="hc-branch-dot" style="background:#8b5cf6;"></span>
-          <span class="hc-branch-name">&#128995; Onroll</span>
-          <span class="hc-branch-hc"><span class="bfeb">223</span><span class="bsep">&#8594;</span><span class="bmar">195</span></span>
-        </div>
-        <div class="hc-metrics">
-          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-green">4</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-red">32</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">2 / 30</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-amber">15.31%</span></div>
-        </div>
-        <div class="hc-locs">
-          <div class="hc-loc-row"><span class="hc-loc-name">Delhi/NCR</span><span class="hc-loc-val"><span class="lfeb">195</span><span class="larrow">&#8594;</span><span class="lmar-dn">177</span></span></div>
-          <div class="hc-loc-row"><span class="hc-loc-name">Bharat</span><span class="hc-loc-val"><span class="lfeb">15</span><span class="larrow">&#8594;</span><span class="lmar-dn">11</span></span></div>
-          <div class="hc-loc-row"><span class="hc-loc-name">Mumbai</span><span class="hc-loc-val"><span class="lfeb">13</span><span class="larrow">&#8594;</span><span class="lmar-dn">7</span></span></div>
+      <!-- ONROLL -->
+      <div class="exec-branch onroll">
+        <div class="exec-branch-bar"></div>
+        <div class="exec-branch-body">
+          <div class="exec-branch-head">
+            <div class="exec-branch-title">Onroll</div>
+            <div class="exec-type-badge">Permanent</div>
+          </div>
+          <div class="exec-branch-hc">
+            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">223</div></div>
+            <div class="exec-hc-mid">
+              <div class="mid-arr">&#8594;</div>
+              <div class="exec-delta-badge exec-delta-neg">&#8722;28</div>
+            </div>
+            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val">195</div></div>
+          </div>
+          <div class="exec-metrics">
+            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-green">4</span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-red">32 <span class="emc-sep">(</span><span style="font-size:0.65rem;color:#6b7280;font-weight:500;">Vol.2 · Co.Init.30</span><span class="emc-sep">)</span></span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-amber">15.31%</span></div>
+          </div>
+          <div class="exec-locs">
+            <div class="exec-locs-title">By Location</div>
+            <div class="exec-loc-row">
+              <span class="exec-loc-name"><span class="exec-loc-dot"></span>Delhi / NCR</span>
+              <span class="exec-loc-vals"><span class="lv-feb">195</span><span class="lv-arr">&#8594;</span><span class="lv-mar">177</span></span>
+            </div>
+            <div class="exec-loc-row">
+              <span class="exec-loc-name"><span class="exec-loc-dot"></span>Bharat</span>
+              <span class="exec-loc-vals"><span class="lv-feb">15</span><span class="lv-arr">&#8594;</span><span class="lv-mar">11</span></span>
+            </div>
+            <div class="exec-loc-row">
+              <span class="exec-loc-name"><span class="exec-loc-dot"></span>Mumbai</span>
+              <span class="exec-loc-vals"><span class="lv-feb">13</span><span class="lv-arr">&#8594;</span><span class="lv-mar">7</span></span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="hc-branch-card offroll">
-        <div class="hc-branch-title">
-          <span class="hc-branch-dot" style="background:#3b82f6;"></span>
-          <span class="hc-branch-name">&#128308; Offroll</span>
-          <span class="hc-branch-hc"><span class="bfeb">52</span><span class="bsep">&#8594;</span><span class="bmar">50</span></span>
-        </div>
-        <div class="hc-metrics">
-          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-green">1</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-red">3</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">1 / 2</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-amber">5.88%</span></div>
-        </div>
-      </div>
-
-      <div class="hc-branch-card consultant">
-        <div class="hc-branch-title">
-          <span class="hc-branch-dot" style="background:#f59e0b;"></span>
-          <span class="hc-branch-name">&#128993; Consultant</span>
-          <span class="hc-branch-hc"><span class="bfeb">13</span><span class="bsep">&#8594;</span><span class="bmar">12</span></span>
-        </div>
-        <div class="hc-metrics">
-          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-gray">0</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-red">1</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">1 / 0</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-amber">7.69%</span></div>
+      <!-- OFFROLL -->
+      <div class="exec-branch offroll">
+        <div class="exec-branch-bar"></div>
+        <div class="exec-branch-body">
+          <div class="exec-branch-head">
+            <div class="exec-branch-title">Offroll</div>
+            <div class="exec-type-badge">Contractual</div>
+          </div>
+          <div class="exec-branch-hc">
+            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">52</div></div>
+            <div class="exec-hc-mid">
+              <div class="mid-arr">&#8594;</div>
+              <div class="exec-delta-badge exec-delta-neg">&#8722;2</div>
+            </div>
+            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val">50</div></div>
+          </div>
+          <div class="exec-metrics">
+            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-green">1</span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-red">3 <span class="emc-sep">(</span><span style="font-size:0.65rem;color:#6b7280;font-weight:500;">Vol.1 · Co.Init.2</span><span class="emc-sep">)</span></span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-amber">5.88%</span></div>
+          </div>
         </div>
       </div>
 
-      <div class="hc-branch-card intern">
-        <div class="hc-branch-title">
-          <span class="hc-branch-dot" style="background:#22c55e;"></span>
-          <span class="hc-branch-name">&#128994; Intern</span>
-          <span class="hc-branch-hc"><span class="bfeb">1</span><span class="bsep">&#8594;</span><span class="bmar" style="color:#16a34a;">1</span></span>
-        </div>
-        <div class="hc-metrics">
-          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-gray">0</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-gray">0</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">0 / 0</span></div>
-          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-gray">0%</span></div>
+      <!-- CONSULTANT -->
+      <div class="exec-branch consultant">
+        <div class="exec-branch-bar"></div>
+        <div class="exec-branch-body">
+          <div class="exec-branch-head">
+            <div class="exec-branch-title">Consultant</div>
+            <div class="exec-type-badge">Advisory</div>
+          </div>
+          <div class="exec-branch-hc">
+            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">13</div></div>
+            <div class="exec-hc-mid">
+              <div class="mid-arr">&#8594;</div>
+              <div class="exec-delta-badge exec-delta-neg">&#8722;1</div>
+            </div>
+            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val">12</div></div>
+          </div>
+          <div class="exec-metrics">
+            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-gray">0</span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-red">1 <span class="emc-sep">(</span><span style="font-size:0.65rem;color:#6b7280;font-weight:500;">Vol.1 · Co.Init.0</span><span class="emc-sep">)</span></span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-amber">7.69%</span></div>
+          </div>
         </div>
       </div>
 
-    </div>
-  </div>
+      <!-- INTERN -->
+      <div class="exec-branch intern">
+        <div class="exec-branch-bar"></div>
+        <div class="exec-branch-body">
+          <div class="exec-branch-head">
+            <div class="exec-branch-title">Intern</div>
+            <div class="exec-type-badge">Trainee</div>
+          </div>
+          <div class="exec-branch-hc">
+            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">1</div></div>
+            <div class="exec-hc-mid">
+              <div class="mid-arr">&#8594;</div>
+              <div class="exec-delta-badge exec-delta-zero">0</div>
+            </div>
+            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val" style="color:#16a34a;">1</div></div>
+          </div>
+          <div class="exec-metrics">
+            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-gray">0</span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-gray">0</span></div>
+            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-gray">0%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end exec-branches -->
+  </div><!-- end exec-tree -->
 
 
   <!-- ONROLL vs OFFROLL CHARTS -->
