@@ -240,309 +240,113 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
 
 <div class="container">
 
-  <!-- ═══ HEADCOUNT TREE — EXECUTIVE VIEW ═══ -->
-  <style>
-  /* ── TREE WRAPPER ── */
-  .exec-tree { margin-bottom: 32px; font-family: 'Segoe UI', system-ui, sans-serif; }
+  <!-- ═══ ONROLL KPI — PRIMARY ═══ -->
+  <div class="section-heading" style="margin-top:0;">🟣 Onroll Headcount</div>
+  <div class="kpi-grid" style="margin-bottom:14px;">
+    <div class="kpi c-blue">
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Feb HC</div>
+      <div class="kpi-value">223</div>
+      <div class="kpi-sub">As on 3 Feb 2026</div>
+    </div>
+    <div class="kpi c-teal">
+      <div class="kpi-icon">✅</div>
+      <div class="kpi-label">Mar HC</div>
+      <div class="kpi-value">195</div>
+      <div class="kpi-sub">As on 5 Mar 2026</div>
+    </div>
+    <div class="kpi c-green">
+      <div class="kpi-icon">🎉</div>
+      <div class="kpi-label">New Joiners</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-sub">Added this period</div>
+    </div>
+    <div class="kpi c-red">
+      <div class="kpi-icon">🚪</div>
+      <div class="kpi-label">Exits</div>
+      <div class="kpi-value">32</div>
+      <div class="kpi-sub">Vol. 2 · Co. Init. 30</div>
+    </div>
+    <div class="kpi c-amber">
+      <div class="kpi-icon">📉</div>
+      <div class="kpi-label">Attrition Rate</div>
+      <div class="kpi-value">15.31%</div>
+      <div class="kpi-sub">Avg HC: 209</div>
+    </div>
+  </div>
 
-  /* ── ROOT NODE ── */
-  .exec-root-row { display: flex; justify-content: center; margin-bottom: 0; }
-  .exec-root {
-    background: linear-gradient(135deg, #0a1628 0%, #0f2a4a 50%, #0d3b6e 100%);
-    border-radius: 20px;
-    padding: 28px 60px 24px;
-    text-align: center;
-    box-shadow: 0 8px 40px rgba(10,22,40,0.35), 0 2px 8px rgba(0,0,0,0.2);
-    position: relative;
-    min-width: 340px;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .exec-root::after {
-    content: '';
-    position: absolute;
-    bottom: -28px; left: 50%; transform: translateX(-50%);
-    width: 2px; height: 28px;
-    background: linear-gradient(to bottom, #334155, #e2e8f0);
-  }
-  .exec-root-eyebrow {
-    font-size: 0.6rem; font-weight: 700; letter-spacing: 2px;
-    text-transform: uppercase; color: #60a5fa; margin-bottom: 10px;
-  }
-  .exec-root-numbers {
-    display: flex; align-items: center; justify-content: center; gap: 16px;
-    margin-bottom: 10px;
-  }
-  .exec-root-num { line-height: 1; }
-  .exec-root-num .num-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 2px; }
-  .exec-root-num .num-val   { font-size: 2.6rem; font-weight: 900; }
-  .exec-root-num.feb .num-val { color: #93c5fd; }
-  .exec-root-num.mar .num-val { color: #34d399; }
-  .exec-root-arrow {
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-    color: #475569;
-  }
-  .exec-root-arrow .arr-icon { font-size: 1.4rem; }
-  .exec-root-arrow .arr-delta {
-    background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4);
-    color: #fca5a5; font-size: 0.62rem; font-weight: 800;
-    padding: 2px 8px; border-radius: 10px; letter-spacing: 0.3px;
-  }
-  .exec-root-footer {
-    display: flex; justify-content: center; gap: 20px;
-    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-top: 4px;
-  }
-  .exec-root-stat { text-align: center; }
-  .exec-root-stat .rs-label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.8px; color: #475569; }
-  .exec-root-stat .rs-val   { font-size: 0.85rem; font-weight: 800; margin-top: 1px; }
-  .exec-root-stat.joiners .rs-val { color: #4ade80; }
-  .exec-root-stat.exits   .rs-val { color: #f87171; }
-  .exec-root-stat.attr    .rs-val { color: #fbbf24; }
+  <!-- Onroll by-location mini strip -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Delhi/NCR</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">195 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#0f766e;">177</span></span>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Bharat</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">15 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">11</span></span>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Mumbai</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">13 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">7</span></span>
+    </div>
+  </div>
 
-  /* ── CONNECTOR ── */
-  .exec-conn { position: relative; height: 50px; }
-  .exec-conn-vt {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 2px; height: 22px;
-    background: linear-gradient(to bottom, #e2e8f0, #94a3b8);
-  }
-  .exec-conn-hz {
-    position: absolute; top: 22px; left: 12.5%; right: 12.5%;
-    height: 2px; background: #94a3b8;
-  }
-  .exec-conn-vb1, .exec-conn-vb2, .exec-conn-vb3, .exec-conn-vb4 {
-    position: absolute; top: 22px; width: 2px; height: 28px;
-    background: linear-gradient(to bottom, #94a3b8, #cbd5e1);
-  }
-  .exec-conn-vb1 { left: 12.5%;  transform: translateX(-50%); }
-  .exec-conn-vb2 { left: 37.5%; transform: translateX(-50%); }
-  .exec-conn-vb3 { left: 62.5%; transform: translateX(-50%); }
-  .exec-conn-vb4 { left: 87.5%; transform: translateX(-50%); }
+  <!-- ═══ OFFROLL KPI — SECONDARY ═══ -->
+  <div class="section-heading">🔵 Offroll Headcount</div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px;">
+    <div class="kpi c-blue"  style="padding:14px 14px 12px;">
+      <div class="kpi-label">Feb HC</div>
+      <div class="kpi-value" style="font-size:1.5rem;">52</div>
+      <div class="kpi-sub">3 Feb 2026</div>
+    </div>
+    <div class="kpi c-teal"  style="padding:14px 14px 12px;">
+      <div class="kpi-label">Mar HC</div>
+      <div class="kpi-value" style="font-size:1.5rem;">50</div>
+      <div class="kpi-sub">5 Mar 2026</div>
+    </div>
+    <div class="kpi c-green" style="padding:14px 14px 12px;">
+      <div class="kpi-label">New Joiners</div>
+      <div class="kpi-value" style="font-size:1.5rem;">1</div>
+      <div class="kpi-sub">Added this period</div>
+    </div>
+    <div class="kpi c-red"   style="padding:14px 14px 12px;">
+      <div class="kpi-label">Exits</div>
+      <div class="kpi-value" style="font-size:1.5rem;">3</div>
+      <div class="kpi-sub">Vol. 1 · Co. Init. 2</div>
+    </div>
+    <div class="kpi c-amber" style="padding:14px 14px 12px;">
+      <div class="kpi-label">Attrition Rate</div>
+      <div class="kpi-value" style="font-size:1.5rem;">5.88%</div>
+      <div class="kpi-sub">Avg HC: 51</div>
+    </div>
+  </div>
 
-  /* ── BRANCH GRID ── */
-  .exec-branches { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
-
-  /* ── BRANCH CARD ── */
-  .exec-branch {
-    background: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
-    transition: transform .15s, box-shadow .15s;
-  }
-  .exec-branch:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.13); }
-
-  /* Colour bar at top */
-  .exec-branch-bar { height: 5px; }
-  .exec-branch.onroll     .exec-branch-bar { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
-  .exec-branch.offroll    .exec-branch-bar { background: linear-gradient(90deg, #1d4ed8, #60a5fa); }
-  .exec-branch.consultant .exec-branch-bar { background: linear-gradient(90deg, #b45309, #fbbf24); }
-  .exec-branch.intern     .exec-branch-bar { background: linear-gradient(90deg, #15803d, #4ade80); }
-
-  .exec-branch-body { padding: 18px 18px 16px; }
-
-  /* Header row: title + type badge */
-  .exec-branch-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .exec-branch-title { font-size: 0.82rem; font-weight: 800; color: #1e293b; letter-spacing: -0.2px; }
-  .exec-type-badge { font-size: 0.6rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .exec-branch.onroll     .exec-type-badge { background: #ede9fe; color: #5b21b6; }
-  .exec-branch.offroll    .exec-type-badge { background: #dbeafe; color: #1e40af; }
-  .exec-branch.consultant .exec-type-badge { background: #fef3c7; color: #92400e; }
-  .exec-branch.intern     .exec-type-badge { background: #dcfce7; color: #166534; }
-
-  /* HC numbers */
-  .exec-branch-hc { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; }
-  .exec-hc-block { text-align: center; }
-  .exec-hc-block .hcb-label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; }
-  .exec-hc-block .hcb-val   { font-size: 1.7rem; font-weight: 900; line-height: 1.1; }
-  .exec-hc-block.feb .hcb-val { color: #2563eb; }
-  .exec-hc-block.mar .hcb-val { color: #0f766e; }
-  .exec-hc-mid { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .exec-hc-mid .mid-arr { font-size: 1.1rem; color: #94a3b8; }
-  .exec-delta-badge { font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
-  .exec-delta-neg { background: #fee2e2; color: #b91c1c; }
-  .exec-delta-pos { background: #dcfce7; color: #15803d; }
-  .exec-delta-zero{ background: #f1f5f9; color: #64748b; }
-
-  /* Metrics table */
-  .exec-metrics { display: flex; flex-direction: column; gap: 6px; }
-  .exec-metric-row { display: flex; justify-content: space-between; align-items: center; }
-  .exec-m-label { font-size: 0.68rem; color: #6b7280; }
-  .exec-m-val   { font-size: 0.72rem; font-weight: 800; }
-  .emc-green { color: #16a34a; }
-  .emc-red   { color: #dc2626; }
-  .emc-amber { color: #d97706; }
-  .emc-gray  { color: #94a3b8; }
-  .emc-sep   { color: #94a3b8; margin: 0 2px; font-weight: 400; }
-
-  /* Location sub-section (Onroll only) */
-  .exec-locs { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2e8f0; display: flex; flex-direction: column; gap: 5px; }
-  .exec-locs-title { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: 700; margin-bottom: 2px; }
-  .exec-loc-row { display: flex; justify-content: space-between; align-items: center; }
-  .exec-loc-dot { width: 6px; height: 6px; border-radius: 50%; background: #6366f1; margin-right: 5px; flex-shrink: 0; }
-  .exec-loc-name { font-size: 0.66rem; color: #475569; font-weight: 600; display: flex; align-items: center; }
-  .exec-loc-vals { font-size: 0.68rem; font-weight: 800; }
-  .exec-loc-vals .lv-feb { color: #4f46e5; }
-  .exec-loc-vals .lv-arr { color: #cbd5e1; margin: 0 3px; }
-  .exec-loc-vals .lv-mar { color: #dc2626; }
-  </style>
-
-  <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#94a3b8;margin:0 0 14px 2px;">&#128202; Headcount Overview — Feb to Mar 2026</div>
-
-  <div class="exec-tree">
-
-    <!-- ── ROOT NODE ── -->
-    <div class="exec-root-row">
-      <div class="exec-root">
-        <div class="exec-root-eyebrow">Total Headcount &nbsp;·&nbsp; All Employee Types</div>
-        <div class="exec-root-numbers">
-          <div class="exec-root-num feb">
-            <div class="num-label">Feb HC</div>
-            <div class="num-val">289</div>
-          </div>
-          <div class="exec-root-arrow">
-            <div class="arr-icon">&#8594;</div>
-            <div class="arr-delta">&#8722;31</div>
-          </div>
-          <div class="exec-root-num mar">
-            <div class="num-label">Mar HC</div>
-            <div class="num-val">258</div>
-          </div>
-        </div>
-        <div class="exec-root-footer">
-          <div class="exec-root-stat joiners"><div class="rs-label">New Joiners</div><div class="rs-val">+5</div></div>
-          <div class="exec-root-stat exits">  <div class="rs-label">Total Exits</div> <div class="rs-val">36</div></div>
-          <div class="exec-root-stat attr">   <div class="rs-label">Attrition</div>   <div class="rs-val">13.16%</div></div>
-        </div>
+  <!-- ═══ OVERALL TOTAL SUMMARY STRIP ═══ -->
+  <div style="background:#1e293b;border-radius:12px;padding:14px 22px;margin-bottom:22px;display:flex;flex-wrap:wrap;align-items:center;gap:0;">
+    <span style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-right:20px;">Overall Total</span>
+    <div style="display:flex;flex-wrap:wrap;gap:24px;flex:1;">
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Feb HC</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#93c5fd;">289</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Mar HC</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#6ee7b7;">258</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">New Joiners</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#86efac;">5</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Total Exits</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#fca5a5;">36</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Attrition</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#fcd34d;">13.16%</div>
       </div>
     </div>
-
-    <!-- ── CONNECTORS ── -->
-    <div class="exec-conn">
-      <div class="exec-conn-vt"></div>
-      <div class="exec-conn-hz"></div>
-      <div class="exec-conn-vb1"></div>
-      <div class="exec-conn-vb2"></div>
-      <div class="exec-conn-vb3"></div>
-      <div class="exec-conn-vb4"></div>
-    </div>
-
-    <!-- ── BRANCHES ── -->
-    <div class="exec-branches">
-
-      <!-- ONROLL -->
-      <div class="exec-branch onroll">
-        <div class="exec-branch-bar"></div>
-        <div class="exec-branch-body">
-          <div class="exec-branch-head">
-            <div class="exec-branch-title">Onroll</div>
-            <div class="exec-type-badge">Permanent</div>
-          </div>
-          <div class="exec-branch-hc">
-            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">223</div></div>
-            <div class="exec-hc-mid">
-              <div class="mid-arr">&#8594;</div>
-              <div class="exec-delta-badge exec-delta-neg">&#8722;28</div>
-            </div>
-            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val">195</div></div>
-          </div>
-          <div class="exec-metrics">
-            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-green">4</span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-red">32 <span class="emc-sep">(</span><span style="font-size:0.65rem;color:#6b7280;font-weight:500;">Vol.2 · Co.Init.30</span><span class="emc-sep">)</span></span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-amber">15.31%</span></div>
-          </div>
-          <div class="exec-locs">
-            <div class="exec-locs-title">By Location</div>
-            <div class="exec-loc-row">
-              <span class="exec-loc-name"><span class="exec-loc-dot"></span>Delhi / NCR</span>
-              <span class="exec-loc-vals"><span class="lv-feb">195</span><span class="lv-arr">&#8594;</span><span class="lv-mar">177</span></span>
-            </div>
-            <div class="exec-loc-row">
-              <span class="exec-loc-name"><span class="exec-loc-dot"></span>Bharat</span>
-              <span class="exec-loc-vals"><span class="lv-feb">15</span><span class="lv-arr">&#8594;</span><span class="lv-mar">11</span></span>
-            </div>
-            <div class="exec-loc-row">
-              <span class="exec-loc-name"><span class="exec-loc-dot"></span>Mumbai</span>
-              <span class="exec-loc-vals"><span class="lv-feb">13</span><span class="lv-arr">&#8594;</span><span class="lv-mar">7</span></span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- OFFROLL -->
-      <div class="exec-branch offroll">
-        <div class="exec-branch-bar"></div>
-        <div class="exec-branch-body">
-          <div class="exec-branch-head">
-            <div class="exec-branch-title">Offroll</div>
-            <div class="exec-type-badge">Contractual</div>
-          </div>
-          <div class="exec-branch-hc">
-            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">52</div></div>
-            <div class="exec-hc-mid">
-              <div class="mid-arr">&#8594;</div>
-              <div class="exec-delta-badge exec-delta-neg">&#8722;2</div>
-            </div>
-            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val">50</div></div>
-          </div>
-          <div class="exec-metrics">
-            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-green">1</span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-red">3 <span class="emc-sep">(</span><span style="font-size:0.65rem;color:#6b7280;font-weight:500;">Vol.1 · Co.Init.2</span><span class="emc-sep">)</span></span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-amber">5.88%</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CONSULTANT -->
-      <div class="exec-branch consultant">
-        <div class="exec-branch-bar"></div>
-        <div class="exec-branch-body">
-          <div class="exec-branch-head">
-            <div class="exec-branch-title">Consultant</div>
-            <div class="exec-type-badge">Advisory</div>
-          </div>
-          <div class="exec-branch-hc">
-            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">13</div></div>
-            <div class="exec-hc-mid">
-              <div class="mid-arr">&#8594;</div>
-              <div class="exec-delta-badge exec-delta-neg">&#8722;1</div>
-            </div>
-            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val">12</div></div>
-          </div>
-          <div class="exec-metrics">
-            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-gray">0</span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-red">1 <span class="emc-sep">(</span><span style="font-size:0.65rem;color:#6b7280;font-weight:500;">Vol.1 · Co.Init.0</span><span class="emc-sep">)</span></span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-amber">7.69%</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- INTERN -->
-      <div class="exec-branch intern">
-        <div class="exec-branch-bar"></div>
-        <div class="exec-branch-body">
-          <div class="exec-branch-head">
-            <div class="exec-branch-title">Intern</div>
-            <div class="exec-type-badge">Trainee</div>
-          </div>
-          <div class="exec-branch-hc">
-            <div class="exec-hc-block feb"><div class="hcb-label">Feb HC</div><div class="hcb-val">1</div></div>
-            <div class="exec-hc-mid">
-              <div class="mid-arr">&#8594;</div>
-              <div class="exec-delta-badge exec-delta-zero">0</div>
-            </div>
-            <div class="exec-hc-block mar"><div class="hcb-label">Mar HC</div><div class="hcb-val" style="color:#16a34a;">1</div></div>
-          </div>
-          <div class="exec-metrics">
-            <div class="exec-metric-row"><span class="exec-m-label">New Joiners</span><span class="exec-m-val emc-gray">0</span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Exits</span><span class="exec-m-val emc-gray">0</span></div>
-            <div class="exec-metric-row"><span class="exec-m-label">Attrition Rate</span><span class="exec-m-val emc-gray">0%</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- end exec-branches -->
-  </div><!-- end exec-tree -->
-
+  </div>
 
   <!-- ONROLL vs OFFROLL CHARTS -->
   <div class="grid-2" style="margin-bottom:22px;">
