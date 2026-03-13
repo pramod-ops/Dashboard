@@ -240,170 +240,154 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
 
 <div class="container">
 
-  <!-- ═══ ONROLL KPI — PRIMARY ═══ -->
-  <div class="section-heading" style="margin-top:0;">🟣 Onroll Headcount</div>
-  <div class="kpi-grid" style="margin-bottom:14px;">
-    <div class="kpi c-blue">
-      <div class="kpi-icon">👥</div>
-      <div class="kpi-label">Feb HC</div>
-      <div class="kpi-value">223</div>
-      <div class="kpi-sub">As on 3 Feb 2026</div>
+  <!-- ═══ HEADCOUNT TREE VIEW ═══ -->
+  <style>
+  .hc-tree-wrap { margin-bottom: 26px; }
+  .hc-tree-root-row { display: flex; justify-content: center; }
+  .hc-root-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0e4d8b 100%);
+    color: #fff; border-radius: 16px; padding: 18px 48px 16px;
+    text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    position: relative; min-width: 280px;
+  }
+  .hc-root-card::after {
+    content: ''; position: absolute;
+    bottom: -22px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 22px; background: #475569;
+  }
+  .hc-root-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; color: #94b4d0; margin-bottom: 6px; font-weight: 700; }
+  .hc-root-hc { font-size: 2rem; font-weight: 900; line-height: 1; }
+  .hc-root-feb { color: #93c5fd; }
+  .hc-root-sep { color: #475569; margin: 0 10px; }
+  .hc-root-mar { color: #6ee7b7; }
+  .hc-root-meta { font-size: 0.68rem; color: #94a3b8; margin-top: 6px; }
+  .hc-connector-row { position: relative; height: 44px; margin: 0; }
+  .hc-conn-vert-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
+  .hc-conn-horiz { position: absolute; top: 22px; left: 12.5%; right: 12.5%; height: 2px; background: #475569; }
+  .hc-conn-v1 { position: absolute; top: 22px; left: 12.5%;  transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
+  .hc-conn-v2 { position: absolute; top: 22px; left: 37.5%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
+  .hc-conn-v3 { position: absolute; top: 22px; left: 62.5%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
+  .hc-conn-v4 { position: absolute; top: 22px; left: 87.5%; transform: translateX(-50%); width: 2px; height: 22px; background: #475569; }
+  .hc-branches { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .hc-branch-card { background: #fff; border-radius: 12px; padding: 14px 16px 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-top: 4px solid transparent; }
+  .hc-branch-card.onroll     { border-top-color: #8b5cf6; }
+  .hc-branch-card.offroll    { border-top-color: #3b82f6; }
+  .hc-branch-card.consultant { border-top-color: #f59e0b; }
+  .hc-branch-card.intern     { border-top-color: #22c55e; }
+  .hc-branch-title { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
+  .hc-branch-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .hc-branch-name { font-size: 0.75rem; font-weight: 800; color: #1e293b; flex: 1; }
+  .hc-branch-hc { font-size: 0.82rem; font-weight: 900; }
+  .hc-branch-hc .bfeb { color: #2563eb; }
+  .hc-branch-hc .bmar { color: #0f766e; }
+  .hc-branch-hc .bsep { color: #94a3b8; margin: 0 3px; }
+  .hc-metrics { display: flex; flex-direction: column; gap: 5px; }
+  .hc-metric { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; }
+  .hc-m-label { color: #6b7280; }
+  .hc-m-val   { font-weight: 700; }
+  .hc-m-green  { color: #16a34a; }
+  .hc-m-red    { color: #dc2626; }
+  .hc-m-amber  { color: #d97706; }
+  .hc-m-gray   { color: #94a3b8; }
+  .hc-locs { margin-top: 9px; padding-top: 7px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 4px; }
+  .hc-loc-row { display: flex; justify-content: space-between; font-size: 0.67rem; }
+  .hc-loc-name { color: #64748b; font-weight: 600; }
+  .hc-loc-val  { font-weight: 800; color: #334155; }
+  .hc-loc-val .lfeb { color: #4f46e5; }
+  .hc-loc-val .lmar-dn { color: #dc2626; }
+  .hc-loc-val .larrow  { color: #cbd5e1; margin: 0 3px; }
+  </style>
+
+  <div class="section-heading" style="margin-top:0;">📊 Headcount Overview</div>
+  <div class="hc-tree-wrap">
+
+    <div class="hc-tree-root-row">
+      <div class="hc-root-card">
+        <div class="hc-root-label">Overall Headcount</div>
+        <div class="hc-root-hc">
+          <span class="hc-root-feb">289</span>
+          <span class="hc-root-sep">&#8594;</span>
+          <span class="hc-root-mar">258</span>
+        </div>
+        <div class="hc-root-meta">Joiners: 5 &nbsp;&middot;&nbsp; Exits: 36 &nbsp;&middot;&nbsp; Attrition: 13.16%</div>
+      </div>
     </div>
-    <div class="kpi c-teal">
-      <div class="kpi-icon">✅</div>
-      <div class="kpi-label">Mar HC</div>
-      <div class="kpi-value">195</div>
-      <div class="kpi-sub">As on 5 Mar 2026</div>
+
+    <div class="hc-connector-row">
+      <div class="hc-conn-vert-top"></div>
+      <div class="hc-conn-horiz"></div>
+      <div class="hc-conn-v1"></div>
+      <div class="hc-conn-v2"></div>
+      <div class="hc-conn-v3"></div>
+      <div class="hc-conn-v4"></div>
     </div>
-    <div class="kpi c-green">
-      <div class="kpi-icon">🎉</div>
-      <div class="kpi-label">New Joiners</div>
-      <div class="kpi-value">4</div>
-      <div class="kpi-sub">Added this period</div>
-    </div>
-    <div class="kpi c-red">
-      <div class="kpi-icon">🚪</div>
-      <div class="kpi-label">Exits</div>
-      <div class="kpi-value">32</div>
-      <div class="kpi-sub">Vol. 2 · Co. Init. 30</div>
-    </div>
-    <div class="kpi c-amber">
-      <div class="kpi-icon">📉</div>
-      <div class="kpi-label">Attrition Rate</div>
-      <div class="kpi-value">15.31%</div>
-      <div class="kpi-sub">Avg HC: 209</div>
+
+    <div class="hc-branches">
+
+      <div class="hc-branch-card onroll">
+        <div class="hc-branch-title">
+          <span class="hc-branch-dot" style="background:#8b5cf6;"></span>
+          <span class="hc-branch-name">&#128995; Onroll</span>
+          <span class="hc-branch-hc"><span class="bfeb">223</span><span class="bsep">&#8594;</span><span class="bmar">195</span></span>
+        </div>
+        <div class="hc-metrics">
+          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-green">4</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-red">32</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">2 / 30</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-amber">15.31%</span></div>
+        </div>
+        <div class="hc-locs">
+          <div class="hc-loc-row"><span class="hc-loc-name">Delhi/NCR</span><span class="hc-loc-val"><span class="lfeb">195</span><span class="larrow">&#8594;</span><span class="lmar-dn">177</span></span></div>
+          <div class="hc-loc-row"><span class="hc-loc-name">Bharat</span><span class="hc-loc-val"><span class="lfeb">15</span><span class="larrow">&#8594;</span><span class="lmar-dn">11</span></span></div>
+          <div class="hc-loc-row"><span class="hc-loc-name">Mumbai</span><span class="hc-loc-val"><span class="lfeb">13</span><span class="larrow">&#8594;</span><span class="lmar-dn">7</span></span></div>
+        </div>
+      </div>
+
+      <div class="hc-branch-card offroll">
+        <div class="hc-branch-title">
+          <span class="hc-branch-dot" style="background:#3b82f6;"></span>
+          <span class="hc-branch-name">&#128308; Offroll</span>
+          <span class="hc-branch-hc"><span class="bfeb">52</span><span class="bsep">&#8594;</span><span class="bmar">50</span></span>
+        </div>
+        <div class="hc-metrics">
+          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-green">1</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-red">3</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">1 / 2</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-amber">5.88%</span></div>
+        </div>
+      </div>
+
+      <div class="hc-branch-card consultant">
+        <div class="hc-branch-title">
+          <span class="hc-branch-dot" style="background:#f59e0b;"></span>
+          <span class="hc-branch-name">&#128993; Consultant</span>
+          <span class="hc-branch-hc"><span class="bfeb">13</span><span class="bsep">&#8594;</span><span class="bmar">12</span></span>
+        </div>
+        <div class="hc-metrics">
+          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-gray">0</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-red">1</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">1 / 0</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-amber">7.69%</span></div>
+        </div>
+      </div>
+
+      <div class="hc-branch-card intern">
+        <div class="hc-branch-title">
+          <span class="hc-branch-dot" style="background:#22c55e;"></span>
+          <span class="hc-branch-name">&#128994; Intern</span>
+          <span class="hc-branch-hc"><span class="bfeb">1</span><span class="bsep">&#8594;</span><span class="bmar" style="color:#16a34a;">1</span></span>
+        </div>
+        <div class="hc-metrics">
+          <div class="hc-metric"><span class="hc-m-label">New Joiners</span><span class="hc-m-val hc-m-gray">0</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Exits</span><span class="hc-m-val hc-m-gray">0</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Vol. / Co. Init.</span><span class="hc-m-val hc-m-gray">0 / 0</span></div>
+          <div class="hc-metric"><span class="hc-m-label">Attrition</span><span class="hc-m-val hc-m-gray">0%</span></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Onroll by-location mini strip -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
-    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
-      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Delhi/NCR</span>
-      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">195 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#0f766e;">177</span></span>
-    </div>
-    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
-      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Bharat</span>
-      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">15 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">11</span></span>
-    </div>
-    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
-      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Mumbai</span>
-      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">13 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">7</span></span>
-    </div>
-  </div>
-
-  <!-- ═══ OFFROLL KPI — SECONDARY ═══ -->
-  <div class="section-heading">🔵 Offroll Headcount</div>
-  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:22px;">
-    <div class="kpi c-blue"  style="padding:14px 14px 12px;">
-      <div class="kpi-label">Feb HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">52</div>
-      <div class="kpi-sub">3 Feb 2026</div>
-    </div>
-    <div class="kpi c-teal"  style="padding:14px 14px 12px;">
-      <div class="kpi-label">Mar HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">50</div>
-      <div class="kpi-sub">5 Mar 2026</div>
-    </div>
-    <div class="kpi c-green" style="padding:14px 14px 12px;">
-      <div class="kpi-label">New Joiners</div>
-      <div class="kpi-value" style="font-size:1.5rem;">1</div>
-      <div class="kpi-sub">Added this period</div>
-    </div>
-    <div class="kpi c-red"   style="padding:14px 14px 12px;">
-      <div class="kpi-label">Exits</div>
-      <div class="kpi-value" style="font-size:1.5rem;">3</div>
-      <div class="kpi-sub">Vol. 1 · Co. Init. 2</div>
-    </div>
-    <div class="kpi c-amber" style="padding:14px 14px 12px;">
-      <div class="kpi-label">Attrition Rate</div>
-      <div class="kpi-value" style="font-size:1.5rem;">5.88%</div>
-      <div class="kpi-sub">Avg HC: 51</div>
-    </div>
-
-  <!-- ═══ CONSULTANT KPI — TERTIARY ═══ -->
-  <div class="section-heading">🟡 Consultant Headcount</div>
-  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:22px;">
-    <div class="kpi c-blue"   style="padding:14px 14px 12px;">
-      <div class="kpi-label">Feb HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">13</div>
-      <div class="kpi-sub">3 Feb 2026</div>
-    </div>
-    <div class="kpi c-teal"   style="padding:14px 14px 12px;">
-      <div class="kpi-label">Mar HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">12</div>
-      <div class="kpi-sub">5 Mar 2026</div>
-    </div>
-    <div class="kpi c-green"  style="padding:14px 14px 12px;">
-      <div class="kpi-label">New Joiners</div>
-      <div class="kpi-value" style="font-size:1.5rem;">0</div>
-      <div class="kpi-sub">Added this period</div>
-    </div>
-    <div class="kpi c-red"    style="padding:14px 14px 12px;">
-      <div class="kpi-label">Exits</div>
-      <div class="kpi-value" style="font-size:1.5rem;">1</div>
-      <div class="kpi-sub">Vol. 1 · Co. Init. 0</div>
-    </div>
-    <div class="kpi c-amber"  style="padding:14px 14px 12px;">
-      <div class="kpi-label">Attrition Rate</div>
-      <div class="kpi-value" style="font-size:1.5rem;">8.00%</div>
-      <div class="kpi-sub">Avg HC: 12.5</div>
-    </div>
-
-  <!-- ═══ INTERN KPI ═══ -->
-  <div class="section-heading">🟢 Intern Headcount</div>
-  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:22px;">
-    <div class="kpi c-blue"   style="padding:14px 14px 12px;">
-      <div class="kpi-label">Feb HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">1</div>
-      <div class="kpi-sub">3 Feb 2026</div>
-    </div>
-    <div class="kpi c-teal"   style="padding:14px 14px 12px;">
-      <div class="kpi-label">Mar HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">1</div>
-      <div class="kpi-sub">5 Mar 2026</div>
-    </div>
-    <div class="kpi c-green"  style="padding:14px 14px 12px;">
-      <div class="kpi-label">New Joiners</div>
-      <div class="kpi-value" style="font-size:1.5rem;">0</div>
-      <div class="kpi-sub">Added this period</div>
-    </div>
-    <div class="kpi c-red"    style="padding:14px 14px 12px;">
-      <div class="kpi-label">Exits</div>
-      <div class="kpi-value" style="font-size:1.5rem;">0</div>
-      <div class="kpi-sub">Vol. 0 · Co. Init. 0</div>
-    </div>
-    <div class="kpi c-amber"  style="padding:14px 14px 12px;">
-      <div class="kpi-label">Attrition Rate</div>
-      <div class="kpi-value" style="font-size:1.5rem;">0.00%</div>
-      <div class="kpi-sub">Avg HC: 1</div>
-  </div>
-
-  <!-- ═══ OVERALL TOTAL SUMMARY STRIP ═══ -->
-  <div style="background:#1e293b;border-radius:12px;padding:14px 22px;margin-bottom:22px;display:flex;flex-wrap:wrap;align-items:center;gap:0;">
-    <span style="font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-right:20px;">Overall Total</span>
-    <div style="display:flex;flex-wrap:wrap;gap:24px;flex:1;">
-      <div style="text-align:center;">
-        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Feb HC</div>
-        <div style="font-size:1.1rem;font-weight:800;color:#93c5fd;">289</div>
-      </div>
-      <div style="text-align:center;">
-        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Mar HC</div>
-        <div style="font-size:1.1rem;font-weight:800;color:#6ee7b7;">258</div>
-      </div>
-      <div style="text-align:center;">
-        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">New Joiners</div>
-        <div style="font-size:1.1rem;font-weight:800;color:#86efac;">5</div>
-      </div>
-      <div style="text-align:center;">
-        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Total Exits</div>
-        <div style="font-size:1.1rem;font-weight:800;color:#fca5a5;">36</div>
-      </div>
-      <div style="text-align:center;">
-        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Attrition</div>
-        <div style="font-size:1.1rem;font-weight:800;color:#fcd34d;">13.16%</div>
-      </div>
-    </div>
-  </div>
 
   <!-- ONROLL vs OFFROLL CHARTS -->
   <div class="grid-2" style="margin-bottom:22px;">
