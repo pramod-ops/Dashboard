@@ -401,19 +401,6 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
       <canvas id="chartLocation" height="160"></canvas>
     </div>
   </div>
-  <!-- ATTRITION ANALYSIS -->
-  <div class="section-heading">Attrition Analysis</div>
-  <div class="grid-1">
-    <div class="card">
-      <div class="card-title">
-        <span class="card-title-dot" style="background:#ef4444;"></span>
-        Attrition Rate &amp; Exit Count by Team (teams with exits only)
-        <span style="margin-left:auto;font-size:0.7rem;font-weight:500;color:#94a3b8;">Bar = Attrition % &nbsp;·&nbsp; Label = No. of exits</span>
-      </div>
-      <canvas id="chartAttritionTeam" height="200"></canvas>
-    </div>
-  </div>
-
   <!-- TEAM-LEVEL HEADCOUNT -->
   <div class="section-heading">Team-Level Headcount</div>
   <div class="grid-1">
@@ -546,61 +533,6 @@ new Chart(document.getElementById('chartLocation'), {
   }
 });
 
-
-/* ═══ CHART 3: Attrition Rate by Team with exit count datalabels ═══ */
-const attTeams = [];
-rows.forEach(r => {
-  if (r.res > 0) {
-    const key = r.team + (r.loc !== 'Delhi/NCR' ? ` (${r.loc})` : '');
-    attTeams.push({ label: key, att: r.att, res: r.res });
-  }
-});
-attTeams.sort((a, b) => b.att - a.att);
-
-new Chart(document.getElementById('chartAttritionTeam'), {
-  type: 'bar',
-  data: {
-    labels: attTeams.map(d => d.label),
-    datasets: [{
-      label: 'Attrition %',
-      data: attTeams.map(d => d.att),
-      exitCounts: attTeams.map(d => d.res),   // stored for datalabels
-      backgroundColor: attTeams.map(d => d.att >= 40 ? '#ef4444' : d.att >= 15 ? '#f59e0b' : '#22c55e'),
-      borderRadius: 5
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true,
-    layout: { padding: { right: 50 } },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const exits = attTeams[ctx.dataIndex].res;
-            return `  ${ctx.parsed.x.toFixed(2)}% attrition  (${exits} exit${exits > 1 ? 's' : ''})`;
-          }
-        }
-      },
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-        offset: 4,
-        color: '#334155',
-        font: { weight: '700', size: 11 },
-        formatter: (value, ctx) => {
-          const exits = attTeams[ctx.dataIndex].res;
-          return `${value.toFixed(1)}%  (${exits})`;
-        }
-      }
-    },
-    scales: {
-      x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '%' }, max: 80 },
-      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
-    }
-  }
-});
 
 /* ═══ CHART 4: Feb vs Mar HC by Team (all teams) ═══ */
 const byTeamAll = groupBy(rows, 'team', ['open', 'close']);
