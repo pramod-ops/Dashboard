@@ -273,35 +273,25 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
       <div class="kpi-value">15.31%</div>
       <div class="kpi-sub">Avg HC: 209</div>
     </div>
-  </div>
-
-  <!-- Onroll by-location mini strip -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
-    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
-      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Delhi/NCR</span>
-      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">195 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#0f766e;">177</span></span>
-    </div>
-    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
-      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Bharat</span>
-      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">15 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">11</span></span>
-    </div>
-    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
-      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Mumbai</span>
-      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">13 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">7</span></span>
+    <div class="kpi c-purple">
+      <div class="kpi-icon">🔢</div>
+      <div class="kpi-label">Net HC Change</div>
+      <div class="kpi-value" style="color:#dc2626;">−28</div>
+      <div class="kpi-sub">Joiners 4 − Exits 32</div>
     </div>
   </div>
 
-  <!-- ═══ OFFROLL KPI — SECONDARY ═══ -->
-  <div class="section-heading">🔵 Offroll Headcount</div>
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px;">
-    <div class="kpi c-blue"  style="padding:14px 14px 12px;">
+  <!-- ═══ OFFROLL KPI — (Offroll + Consultant + Intern) ═══ -->
+  <div class="section-heading">🔵 Offroll Headcount <span style="font-weight:500;color:#94a3b8;font-size:0.6rem;letter-spacing:0.5px;">(Incl. Consultant &amp; Intern)</span></div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px;">
+    <div class="kpi c-blue" style="padding:14px 14px 12px;">
       <div class="kpi-label">Feb HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">52</div>
+      <div class="kpi-value" style="font-size:1.5rem;">66</div>
       <div class="kpi-sub">3 Feb 2026</div>
     </div>
-    <div class="kpi c-teal"  style="padding:14px 14px 12px;">
+    <div class="kpi c-teal" style="padding:14px 14px 12px;">
       <div class="kpi-label">Mar HC</div>
-      <div class="kpi-value" style="font-size:1.5rem;">50</div>
+      <div class="kpi-value" style="font-size:1.5rem;">63</div>
       <div class="kpi-sub">5 Mar 2026</div>
     </div>
     <div class="kpi c-green" style="padding:14px 14px 12px;">
@@ -309,15 +299,30 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
       <div class="kpi-value" style="font-size:1.5rem;">1</div>
       <div class="kpi-sub">Added this period</div>
     </div>
-    <div class="kpi c-red"   style="padding:14px 14px 12px;">
+    <div class="kpi c-red" style="padding:14px 14px 12px;">
       <div class="kpi-label">Exits</div>
-      <div class="kpi-value" style="font-size:1.5rem;">3</div>
-      <div class="kpi-sub">Vol. 1 · Co. Init. 2</div>
+      <div class="kpi-value" style="font-size:1.5rem;">4</div>
+      <div class="kpi-sub">Vol. 2 · Co. Init. 2</div>
     </div>
     <div class="kpi c-amber" style="padding:14px 14px 12px;">
       <div class="kpi-label">Attrition Rate</div>
-      <div class="kpi-value" style="font-size:1.5rem;">5.88%</div>
-      <div class="kpi-sub">Avg HC: 51</div>
+      <div class="kpi-value" style="font-size:1.5rem;">6.20%</div>
+      <div class="kpi-sub">Avg HC: 64.5</div>
+    </div>
+  </div>
+  <!-- Offroll sub-type breakdown -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #3b82f6;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">🔵 Offroll</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#1d4ed8;">52 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">50</span></span>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #f59e0b;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">🟡 Consultant</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#b45309;">13 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">12</span></span>
+    </div>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #22c55e;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">🟢 Intern</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#15803d;">1 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#15803d;">1</span></span>
     </div>
   </div>
 
@@ -345,6 +350,10 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
         <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Attrition</div>
         <div style="font-size:1.1rem;font-weight:800;color:#fcd34d;">13.16%</div>
       </div>
+      <div style="text-align:center;">
+        <div style="font-size:0.58rem;text-transform:uppercase;color:#64748b;font-weight:700;letter-spacing:.5px;">Net Change</div>
+        <div style="font-size:1.1rem;font-weight:800;color:#f87171;">−31</div>
+      </div>
     </div>
   </div>
 
@@ -365,55 +374,33 @@ tr.total-row td { color: #f1f5f9; font-weight: 700; border: none; }
       <canvas id="chartOffrollTeam" height="200"></canvas>
     </div>
   </div>
-
-  <!-- QUICK INSIGHTS -->
-  <div class="insight-row">
-    <div class="insight-chip chip-red">
-      <span class="chip-icon">🔴</span>
-      <span class="chip-label">Highest Attrition:</span>
-      <span class="chip-val">Mumbai Execution Team — 60%</span>
+  <!-- ONROLL BY-LOCATION STRIP -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Delhi/NCR</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">195 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#0f766e;">177</span></span>
     </div>
-    <div class="insight-chip chip-red">
-      <span class="chip-icon">🔴</span>
-      <span class="chip-label">Delhi/NCR Execution Team:</span>
-      <span class="chip-val">35.56% attrition — 16 exits</span>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Bharat</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">15 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">11</span></span>
     </div>
-    <div class="insight-chip chip-amber">
-      <span class="chip-icon">🟡</span>
-      <span class="chip-label">Co. Initiated:</span>
-      <span class="chip-val">29 of 36 exits (80.6%)</span>
-    </div>
-    <div class="insight-chip chip-green">
-      <span class="chip-icon">🟢</span>
-      <span class="chip-label">Technology (Delhi):</span>
-      <span class="chip-val">+3 HC — only team to grow</span>
-    </div>
-    <div class="insight-chip chip-amber">
-      <span class="chip-icon">🟡</span>
-      <span class="chip-label">Execution Team total exits:</span>
-      <span class="chip-val">26 of 36 (72% of all exits)</span>
+    <div style="background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;border-left:4px solid #6366f1;">
+      <span style="font-size:0.72rem;font-weight:700;color:#475569;">Mumbai</span>
+      <span style="font-size:0.85rem;font-weight:800;color:#4f46e5;">13 <span style="color:#94a3b8;font-weight:400;">→</span> <span style="color:#dc2626;">7</span></span>
     </div>
   </div>
 
   <!-- OVERVIEW: Location + Exit Breakdown -->
   <div class="section-heading">Overview</div>
-  <div class="grid-2">
+  <div class="grid-1">
     <div class="card">
       <div class="card-title">
         <span class="card-title-dot" style="background:#10b981;"></span>
-        HC by Location (Feb vs Mar)
+        Total Headcount by Location (Feb vs Mar)
       </div>
-      <canvas id="chartLocation" height="220"></canvas>
-    </div>
-    <div class="card">
-      <div class="card-title">
-        <span class="card-title-dot" style="background:#ef4444;"></span>
-        Exit Breakdown
-      </div>
-      <canvas id="chartExits" height="220"></canvas>
+      <canvas id="chartLocation" height="160"></canvas>
     </div>
   </div>
-
   <!-- ATTRITION ANALYSIS -->
   <div class="section-heading">Attrition Analysis</div>
   <div class="grid-1">
@@ -559,31 +546,6 @@ new Chart(document.getElementById('chartLocation'), {
   }
 });
 
-/* ═══ CHART 2: Exit Breakdown (Donut) ═══ */
-new Chart(document.getElementById('chartExits'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Voluntary Resigned', 'Co. Initiated'],
-    datasets: [{
-      data: [7, 29],
-      backgroundColor: ['#f59e0b', '#ef4444'],
-      borderWidth: 3, borderColor: '#fff', hoverOffset: 8
-    }]
-  },
-  options: {
-    responsive: true,
-    cutout: '60%',
-    plugins: {
-      legend: { position: 'bottom', labels: { padding: 14, font: { size: 11 } } },
-      datalabels: {
-        color: '#fff',
-        font: { weight: 'bold', size: 13 },
-        formatter: (value) => value
-      },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} (${(ctx.parsed/36*100).toFixed(1)}%)` } }
-    }
-  }
-});
 
 /* ═══ CHART 3: Attrition Rate by Team with exit count datalabels ═══ */
 const attTeams = [];
